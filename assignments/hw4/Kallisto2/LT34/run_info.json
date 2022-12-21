@@ -1,0 +1,13 @@
+{
+	"n_targets": 190432,
+	"n_bootstraps": 100,
+	"n_processed": 49286260,
+	"n_pseudoaligned": 10119007,
+	"n_unique": 2841577,
+	"p_pseudoaligned": 20.5,
+	"p_unique": 5.8,
+	"kallisto_version": "0.44.0",
+	"index_version": 10,
+	"start_time": "Sat Mar 13 22:01:30 2021",
+	"call": "kallisto quant -i /gpfs/data/courses/bminga3004/Practicum5/HomoSapiens -o /gpfs/scratch/np788/Practicum5/Assignment/Kallisto/LT34 -b 100 --bias /gpfs/scratch/np788/Practicum5/Assignment/LT34_R1.fastq.gz /gpfs/scratch/np788/Practicum5/Assignment/LT34_R2.fastq.gz"
+}

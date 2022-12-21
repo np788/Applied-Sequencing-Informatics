@@ -1,0 +1,68 @@
+########################################################
+#                 exomePeak2 Run Info                  #
+########################################################
+
+bam_ip = "./SRR7992452/SRR7992452.sorted.bam"
+bam_input = "./SRR7992457/SRR7992457.sorted.bam"
+bam_treated_ip = NULL
+bam_treated_input = NULL
+genome = NA
+gff_dir = "/gpfs/scratch/np788/hw6/gencode.v37.annotation.gtf"
+mod_annot = NULL
+paired_end = FALSE
+library_type = "unstranded"
+fragment_length = 100
+binding_length = 25
+step_length = 25
+peak_width = 50
+pc_count_cutoff = 5
+bg_count_cutoff = 50
+p_cutoff = 1e-05
+p_adj_cutoff = NULL
+log2FC_cutoff = 1
+consistent_peak = FALSE
+consistent_log2FC_cutoff = 1
+consistent_fdr_cutoff = 0.05
+alpha = 0.05
+p0 = 0.8
+parallel = FALSE
+background_method = "all"
+manual_background = NULL
+correct_GC_bg = TRUE
+qtnorm = FALSE
+glm_type = "DESeq2"
+LFC_shrinkage = "apeglm"
+export_results = TRUE
+export_format = "CSV"
+table_style = "bed"
+save_plot_GC = TRUE
+save_plot_analysis = FALSE
+save_plot_name = "f5f11"
+save_dir = "f5f11"
+peak_calling_mode = "exon"
+
+########################################################
+#              Transcript Annotation Info:             #
+########################################################
+
+# Db type: TxDb
+# Supporting package: GenomicFeatures
+# Data source: /gpfs/scratch/np788/hw6/gencode.v37.annotation.gtf
+# Organism: NA
+# Taxonomy ID: NA
+# miRBase build ID: NA
+# Genome: NA
+# Nb of transcripts: 234485
+# Db created by: GenomicFeatures package from Bioconductor
+# Creation time: 2021-04-03 02:16:29 -0400 (Sat, 03 Apr 2021)
+# GenomicFeatures version at creation time: 1.40.1
+# RSQLite version at creation time: 2.2.4
+# DBSCHEMAVERSION: 1.2
+
+########################################################
+#                Genome Reference Info:                #
+########################################################
+Missing Genome Sequence Infomation
+
+--------------------------------------------------------
+exomePeak2 Version: 1.0.0

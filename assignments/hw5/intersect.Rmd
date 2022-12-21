@@ -1,0 +1,7 @@
+```{r}
+sub_ds <- read.csv("sub_ds2.csv", header=TRUE)#, row.names=1)
+sub_et <- read.csv("sub_e_et.csv", header=TRUE)#, row.names=1)
+sub_qlf <- read.csv("sub_e_qlf.csv", header=TRUE)#, row.names=1)
+#intersect(sub_ds$Geneid, sub_et$Geneid)
+intersect(sub_ds$Geneid, sub_qlf$genes)
+```

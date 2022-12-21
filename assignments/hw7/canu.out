@@ -1,0 +1,178 @@
+
+Found perl:
+   /usr/bin/perl
+   This is perl 5, version 16, subversion 3 (v5.16.3) built for x86_64-linux-thread-multi
+
+Found java:
+   /usr/bin/java
+   openjdk version "1.8.0_131"
+
+Found canu:
+   /gpfs/share/apps/canu/2.0/bin/canu
+   canu snapshot v2.2-development +60 changes (r10169 ad130ccbf265bb0e718e2952aa731e7d421572ce)
+
+-- canu snapshot v2.2-development +60 changes (r10169 ad130ccbf265bb0e718e2952aa731e7d421572ce)
+--
+-- CITATIONS
+--
+-- For 'standard' assemblies of PacBio or Nanopore reads:
+--   Koren S, Walenz BP, Berlin K, Miller JR, Phillippy AM.
+--   Canu: scalable and accurate long-read assembly via adaptive k-mer weighting and repeat separation.
+--   Genome Res. 2017 May;27(5):722-736.
+--   http://doi.org/10.1101/gr.215087.116
+-- 
+-- Read and contig alignments during correction and consensus use:
+--   Šošic M, Šikic M.
+--   Edlib: a C/C ++ library for fast, exact sequence alignment using edit distance.
+--   Bioinformatics. 2017 May 1;33(9):1394-1395.
+--   http://doi.org/10.1093/bioinformatics/btw753
+-- 
+-- Overlaps are generated using:
+--   Berlin K, et al.
+--   Assembling large genomes with single-molecule sequencing and locality-sensitive hashing.
+--   Nat Biotechnol. 2015 Jun;33(6):623-30.
+--   http://doi.org/10.1038/nbt.3238
+-- 
+--   Myers EW, et al.
+--   A Whole-Genome Assembly of Drosophila.
+--   Science. 2000 Mar 24;287(5461):2196-204.
+--   http://doi.org/10.1126/science.287.5461.2196
+-- 
+-- Corrected read consensus sequences are generated using an algorithm derived from FALCON-sense:
+--   Chin CS, et al.
+--   Phased diploid genome assembly with single-molecule real-time sequencing.
+--   Nat Methods. 2016 Dec;13(12):1050-1054.
+--   http://doi.org/10.1038/nmeth.4035
+-- 
+-- Contig consensus sequences are generated using an algorithm derived from pbdagcon:
+--   Chin CS, et al.
+--   Nonhybrid, finished microbial genome assemblies from long-read SMRT sequencing data.
+--   Nat Methods. 2013 Jun;10(6):563-9
+--   http://doi.org/10.1038/nmeth.2474
+-- 
+-- CONFIGURE CANU
+--
+-- Detected Java(TM) Runtime Environment '1.8.0_131' (from 'java') with -d64 support.
+--
+-- WARNING:
+-- WARNING:  Failed to run gnuplot using command 'gnuplot'.
+-- WARNING:  Plots will be disabled.
+-- WARNING:
+--
+-- Detected 40 CPUs and 377 gigabytes of memory.
+-- Detected Slurm with 'sinfo' binary in /cm/shared/apps/slurm/current/bin/sinfo.
+-- Detected Slurm with task IDs up to 3000 allowed.
+-- 
+-- Found   2 hosts with  40 cores and  719 GB memory under Slurm control.
+-- Found   4 hosts with  40 cores and 1439 GB memory under Slurm control.
+-- Found   5 hosts with  40 cores and  692 GB memory under Slurm control.
+-- Found  77 hosts with  40 cores and  319 GB memory under Slurm control.
+--
+--                         (tag)Threads
+--                (tag)Memory         |
+--        (tag)             |         |  algorithm
+--        -------  ----------  --------  -----------------------------
+-- Grid:  meryl     12.000 GB    4 CPUs  (k-mer counting)
+-- Grid:  hap        8.000 GB    4 CPUs  (read-to-haplotype assignment)
+-- Grid:  cormhap    6.000 GB   10 CPUs  (overlap detection with mhap)
+-- Grid:  obtovl     4.000 GB    8 CPUs  (overlap detection)
+-- Grid:  utgovl     4.000 GB    8 CPUs  (overlap detection)
+-- Grid:  cor        8.000 GB    4 CPUs  (read correction)
+-- Grid:  ovb        4.000 GB    1 CPU   (overlap store bucketizer)
+-- Grid:  ovs        8.000 GB    1 CPU   (overlap store sorting)
+-- Grid:  red       16.000 GB    4 CPUs  (read error detection)
+-- Grid:  oea        8.000 GB    1 CPU   (overlap error adjustment)
+-- Grid:  bat       16.000 GB    4 CPUs  (contig construction with bogart)
+-- Grid:  cns        -.--- GB    4 CPUs  (consensus)
+--
+-- Found Nanopore reads in 'ecoli.seqStore':
+--   Libraries:
+--     Nanopore:              1
+--   Reads:
+--     Raw:                   1400509
+--
+--
+-- Generating assembly 'ecoli' in '/gpfs/scratch/np788/hw7':
+--   genomeSize:
+--     7000
+--
+--   Overlap Generation Limits:
+--     corOvlErrorRate 0.3200 ( 32.00%)
+--     obtOvlErrorRate 0.1200 ( 12.00%)
+--     utgOvlErrorRate 0.1200 ( 12.00%)
+--
+--   Overlap Processing Limits:
+--     corErrorRate    0.5000 ( 50.00%)
+--     obtErrorRate    0.1200 ( 12.00%)
+--     utgErrorRate    0.1200 ( 12.00%)
+--     cnsErrorRate    0.2000 ( 20.00%)
+--
+--   Stages to run:
+--     correct raw reads.
+--     trim corrected reads.
+--     assemble corrected and trimmed reads.
+--
+--
+-- BEGIN CORRECTION
+-- Set corMinCoverage=4 based on read coverage of 200.07.
+-- Found 1 read correction output files.
+-- Finished stage 'cor-generateCorrectedReadsCheck', reset canuIteration.
+-- Found 1 read correction output files.
+-- Finished stage 'cor-generateCorrectedReadsCheck', reset canuIteration.
+-- Found 1 read correction output files.
+-- Finished stage 'cor-generateCorrectedReadsCheck', reset canuIteration.
+--
+-- Loading corrected reads into corStore and seqStore.
+----------------------------------------
+-- Starting command on Sun Apr 11 01:01:26 2021 with 5539731.921 GB free disk space
+
+    cd correction
+    /gpfs/share/apps/canu/2.0/bin/loadCorrectedReads \
+      -S ../ecoli.seqStore \
+      -C ./ecoli.corStore \
+      -L ./2-correction/corjob.files \
+    >  ./ecoli.loadCorrectedReads.log \
+    2> ./ecoli.loadCorrectedReads.err
+
+-- Finished on Sun Apr 11 01:01:27 2021 (one second) with 5539731.875 GB free disk space
+----------------------------------------
+--
+-- No corrected reads generated; correctReads output saved.
+--
+-- Purging overlaps used for correction.
+-- Finished stage 'cor-loadCorrectedReads', reset canuIteration.
+----------------------------------------
+-- Starting command on Sun Apr 11 01:01:27 2021 with 5539731.867 GB free disk space
+
+    cd .
+    /gpfs/share/apps/canu/2.0/bin/sqStoreDumpFASTQ \
+      -corrected \
+      -S ./ecoli.seqStore \
+      -o ./ecoli.correctedReads.gz \
+      -fasta \
+      -nolibname \
+    > ecoli.correctedReads.fasta.err 2>&1
+
+-- Finished on Sun Apr 11 01:01:27 2021 (furiously fast) with 5539731.867 GB free disk space
+----------------------------------------
+--
+-- Corrected reads saved in 'ecoli.correctedReads.fasta.gz'.
+-- Finished stage 'cor-dumpCorrectedReads', reset canuIteration.
+--
+-- ERROR:  Read coverage (0) lower than allowed.
+-- ERROR:    stopOnLowCoverage = 10
+-- ERROR:
+-- ERROR:  This could be caused by an incorrect genomeSize or poor
+-- ERROR:  quality reads that cound not be sufficiently corrected.
+-- ERROR:
+-- ERROR:  You can force Canu to continue by decreasing parameter
+-- ERROR:  stopOnLowCoverage (and possibly minInputCoverage too).
+-- ERROR:  Be warned that the quality of corrected reads and/or
+-- ERROR:  contiguity of contigs will be poor.
+--
+
+ABORT:
+ABORT: canu snapshot v2.2-development +60 changes (r10169 ad130ccbf265bb0e718e2952aa731e7d421572ce)
+ABORT: Don't panic, but a mostly harmless error occurred and Canu stopped.
+ABORT: Try restarting.  If that doesn't work, ask for help.
+ABORT:

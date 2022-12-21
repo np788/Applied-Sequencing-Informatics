@@ -1,0 +1,7 @@
+batch	condition
+LT34	A	Ctrl
+LT35	B	Ctrl
+LT36	C	Ctrl
+LT46	A	siRNA
+LT47	B	siRNA	
+LT48	C	siRNA

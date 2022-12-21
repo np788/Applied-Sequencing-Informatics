@@ -1,0 +1,95 @@
+```{r}
+library(edgeR)
+```
+
+```{r}
+CountTable <- read.csv("kal2.csv", header=TRUE, row.names=1)
+dgList <- DGEList(counts=CountTable, genes=rownames(CountTable))
+isexpr <- rowSums(cpm(dgList) > 1) >=3 # require a minimum counts per million
+#isexpr <- rowSums(dgList$counts > 30) >=6 # or we can specify a minimum count
+sum(isexpr)/nrow(dgList)
+countsPerMillion <- cpm(dgList)
+countCheck <- countsPerMillion > 1
+keep <- which(rowSums(countCheck) >= 2)
+dgList <- dgList[keep,]
+#dgList <- calcNormFactors(dgList, method="TMM")
+plotMDS(dgList)
+```
+
+```{r}
+samples <- read.table("sample.txt", header=TRUE)
+batch <- factor(samples$batch)
+cond <- factor(samples$condition, levels=c("Ctrl","siRNA"))
+#sampleType<- rep("Ctrl", ncol(dgList))
+#sampleType[grep("siRNA", colnames(dgList))] <- "siRNA"
+#sampleReplicate <- paste("S", rep(1:3, each=2), sep="")
+#designMat <- model.matrix(~sampleReplicate + sampleType)
+#sampleType
+design <- model.matrix(~batch+cond)
+y <- estimateDisp(dgList,design)
+fit <- glmQLFit(y, design)
+qlf <- glmQLFTest(fit)
+#ttags = topTags(qlf)
+```
+
+```{r}
+pval = 0.05
+
+e_df_qlf<-as.data.frame(`qlf`)
+e_df_qlf$log10.pvalue<-(-1*log10(e_df_qlf$PValue))
+e_df_qlf$Significant.Gene<-"No"
+row_number<-which(e_df_qlf$PValue<pval & abs(e_df_qlf$logFC)>1)
+e_df_qlf$Significant.Gene[row_number]<-"Yes"
+
+e_df_qlf$Differential_Gene<-e_df_qlf$Significant.Gene
+e_df_qlf$Differential_Gene[which(e_df_qlf$PValue< pval & e_df_qlf$logFC> 1)]<-"Up-Regulated"
+e_df_qlf$Differential_Gene[which(e_df_qlf$PValue< pval & e_df_qlf$logFC< -1)]<-"Down-Regulated"
+
+sub_e_qlf = subset(e_df_qlf, abs(e_df_qlf$logFC) > 1 & e_df_qlf$PValue < pval)
+write.csv(sub_e_qlf, "sub_e_qlf.csv", row.names=TRUE)
+write.csv(e_df_qlf, "e_df_qlf.csv", row.names=TRUE)
+```
+
+```{r Volcano plot with ggplot2}
+library(ggplot2)
+library(ggrepel)
+#RNA volcano
+
+#make sure to adjust xlim and ylim based off of the data. Run hist(e_df_qlf$logFC) and hist(e_df_qlf$log10.pvalue) to get an idea
+
+# pick a set of genes to label:
+e_df_qlf$label<-"No"
+e_df_qlf$label[which(e_df_qlf$PValue<0.05 & abs(e_df_qlf$logFC)>1)]<-"Yes"
+
+# Here we add two further columns, the gene symbol (common name) and entrez ID - both of which may be useful downstream
+e_df_qlf$symbol <- mapIds(org.Hs.eg.db, keys=row.names(e_df_qlf), column="SYMBOL", keytype="ENSEMBL", multiVals="first") # MAPS GENE IDs
+e_df_qlf$entrez <- mapIds(org.Hs.eg.db, keys=row.names(e_df_qlf), column="ENTREZID", keytype="ENSEMBL", multiVals="first")
+
+#pdf("Volcano.pdf", width=8, height=4,useDingbats=FALSE)
+pRNA <- ggplot(e_df_qlf, aes(logFC, log10.pvalue))+
+  geom_point(aes(colour = Differential_Gene),size=1)+
+  scale_colour_manual(values=c("blue", "black","red"))+
+  xlim(-6,6)+
+  ylim(0,5)+
+  xlab(expression(paste(log[2], 'FC(Ctrl/siRNA)')))+
+  ylab(expression(paste(-log[10], '(Q-value)'))) +
+  theme_bw() + 
+  theme(panel.background = element_blank())+
+  theme(panel.border = element_rect(colour = "black", fill=NA, size=1))+
+
+  theme(text = element_text(size=10)) +
+  theme(plot.title = element_blank())+
+  theme(axis.text = element_text( color = "black", size = 10))+
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(), axis.line=element_line()) +
+  theme(legend.position="none")+
+  geom_vline(xintercept=-abs_log2fc,linetype="dotted")+
+  geom_vline(xintercept=abs_log2fc,linetype="dotted")+
+  geom_text_repel(
+    data = subset(e_df_qlf, label=="Yes"),
+    aes(label = e_df_qlf$symbol[which(label=="Yes")]),
+    size = 5,
+    box.padding = unit(0.35, "lines"),
+    point.padding = unit(0.5, "lines")
+  )
+pRNA

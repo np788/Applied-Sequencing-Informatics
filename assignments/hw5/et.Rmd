@@ -1,0 +1,63 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(edgeR)
+library("DESeq2")
+library("pheatmap")
+library("RColorBrewer")
+library("vsn")
+library("AnnotationDbi")
+library("org.Hs.eg.db")
+library("genefilter")
+library("biomaRt")
+library("IHW")
+library("ggplot2")
+```
+```{r}
+CountTable <- read.csv("kal2.csv", header=TRUE, row.names=1) 
+mobDataGroups <- c("Ctrl", "Ctrl", "Ctrl", "siRNA", "siRNA", "siRNA")
+d <- DGEList(counts=CountTable,group=factor(mobDataGroups))
+d.full <- d
+apply(d$counts, 2, sum)
+keep <- rowSums(cpm(d)>100) >= 2
+d <- d[keep,]
+dim(d)
+d$samples$lib.size <- colSums(d$counts)
+d$samples
+d <- calcNormFactors(d)
+plotMDS(d, method="bcv", col=as.numeric(d$samples$group))
+#legend("bottomleft", as.character(unique(d$samples$group)), col=1:3, pch=20)
+#vsd1 <- varianceStabilizingTransformation(d, blind=FALSE)
+```
+```{r}
+d1 <- estimateCommonDisp(d, verbose=T)
+d1 <- estimateTagwiseDisp(d1)
+plotBCV(d1)
+```
+
+```{r}
+et12 <- exactTest(d1, pair=c(2,1)) # compare groups 2 and 3
+pval = 0.05
+l2fc = 1
+
+e_df_et<-as.data.frame(`et12`)
+e_df_et$Significant.Gene<-"No"
+row_number<-which(e_df_et$PValue<0.05 & abs(e_df_et$logFC)>1)
+e_df_et$Significant.Gene[row_number]<-"Yes"
+
+e_df_et$Differential_Gene<-e_df_et$Significant.Gene
+e_df_et$Differential_Gene[which(e_df_et$PValue< 0.05 & e_df_et$logFC> 1)]<-"Up-Regulated"
+e_df_et$Differential_Gene[which(e_df_et$PValue< 0.05 & e_df_et$logFC< -1)]<-"Down-Regulated"
+
+sub_e_et = subset(e_df_et, abs(e_df_et$logFC) > 1 & e_df_et$PValue < .05)
+
+#topTags(et12, n=10)
+#write.csv(e_df_et, "edger2.csv", row.names=TRUE)
+write.csv(sub_e_et, "sub_e_et.csv", row.names=TRUE)
+
+#de1 <- decideTestsDGE(et12, adjust.method="BH", p.value=0.05)
+e_df_et$log
+```
