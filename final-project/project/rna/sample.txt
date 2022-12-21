@@ -1,0 +1,5 @@
+batch	condition
+ctrl1	A	Ctrl
+ctrl2	B	Ctrl
+crispr1	A	Cspr
+crispr2	B	Cspr

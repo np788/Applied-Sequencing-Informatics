@@ -1,0 +1,2 @@
+"","query","significant","p_value","term_size","query_size","intersection_size","precision","recall","term_id","source","term_name","effective_domain_size","source_order","parents"
+"1","query_1",TRUE,4.44197421926162e-05,11296,396,285,0.71969696969697,0.0252301699716714,"GO:0043231","GO:CC","intracellular membrane-bounded organelle",18960,2142,
