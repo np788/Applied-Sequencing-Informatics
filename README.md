@@ -8,6 +8,6 @@ FOXM1 transcription factor.
 
 All relevant R scripts and BASH scripts are included in the /project subfolder. The parent folder contains the final report, presentation slides, and a PDF containing all the code used. The latter was requested by the instructors. 
 
-## HWs
+## assignments
 
 This contains files for a few course assignments that I held onto for whatever reason.
